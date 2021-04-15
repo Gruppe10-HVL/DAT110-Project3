@@ -43,6 +43,13 @@ public class Util {
 		
 		// implement: read the descriptions above
 		boolean cond = false;
+		
+		//TODO
+		if (lower.compareTo(id) <= 0 ) {
+			if (id.compareTo(upper) <= 0) {
+				cond = true;
+			};
+		};
 
 		
 		return cond;
