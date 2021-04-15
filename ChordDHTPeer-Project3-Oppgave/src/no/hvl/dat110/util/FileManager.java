@@ -90,9 +90,7 @@ public class FileManager {
     	createReplicaFiles();
     	
 		// iterate over the replicas
-    	for(int i = 0; i < numReplicas; i++) {
-    		
-    		BigInteger replica = replicafiles[i];
+    	for(BigInteger replica : replicafiles) {
         	
         	// for each replica, find its successor by performing findSuccessor(replica)
     	    NodeInterface successor = chordnode.findSuccessor(replica);	
@@ -126,15 +124,22 @@ public class FileManager {
 		// Task: Given a filename, find all the peers that hold a copy of this file
 		
 		// generate the N replicas from the filename by calling createReplicaFiles()
+		createReplicaFiles();
 		
 		// it means, iterate over the replicas of the file
+		for(BigInteger replica : replicafiles) {
+        	
+			// for each replica, do findSuccessor(replica) that returns successor s.
+    	    NodeInterface s = chordnode.findSuccessor(replica);	
+        	
+    	    // get the metadata (Message) of the replica from the successor, s (i.e. active peer) of the file
+    	    Message metadata = s.getFilesMetadata(replica);
+			
+    	 	// save the metadata in the set succinfo.
+			succinfo.add(metadata);
+		}
 		
-		// for each replica, do findSuccessor(replica) that returns successor s.
-		
-		// get the metadata (Message) of the replica from the successor, s (i.e. active peer) of the file
-		
-		// save the metadata in the set succinfo.
-		
+	
 		this.activeNodesforFile = succinfo;
 		
 		return succinfo;
@@ -149,12 +154,19 @@ public class FileManager {
 		// Task: Given all the active peers of a file (activeNodesforFile()), find which is holding the primary copy
 		
 		// iterate over the activeNodesforFile
-		
-		// for each active peer (saved as Message)
-		
-		// use the primaryServer boolean variable contained in the Message class to check if it is the primary or not
-		
-		// return the primary
+		for(Message msg : activeNodesforFile) {
+			
+			// for each active peer (saved as Message)
+
+			// use the primaryServer boolean variable contained in the Message class to check if it is the primary or not
+			if(msg.isPrimaryServer()) {
+				return Util.getProcessStub(msg.getNodeIP(), msg.getPort());
+			}
+			
+			// return the primary
+			
+		}
+
 		
 		return null; 
 	}
