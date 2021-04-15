@@ -48,15 +48,9 @@ public class ChordLookup {
 		if (nodeStub != null) {
 
 			Boolean isMember = false;
-			NodeInterface keyPredecessor = node.getPredecessor();
-			BigInteger keyPredecessorID = keyPredecessor.getNodeID();
-
-			String oneString = "1";
-			BigInteger one = new BigInteger(oneString);
-			BigInteger keyPredecessorIDplusone = keyPredecessorID.add(one);
 
 			BigInteger keySuccessorID = keySuccessor.getNodeID();
-			isMember = Util.computeLogic(key, keyPredecessorIDplusone, keySuccessorID);
+			isMember = Util.computeLogic(key, node.getNodeID().add(new BigInteger("1")), keySuccessorID);
 
 			// if logic returns true, then return the successor
 
